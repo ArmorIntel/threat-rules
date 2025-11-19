@@ -1,18 +1,18 @@
+import "hash"
+
 rule LockBit5_Ransomware {
     meta:
-        description = "LockBit 5.0 detection based on last IOCs (not previous generation Lockbit)"
+        description = "LockBit 5.0 detection based on last IOCs"
         author = "ArmorIntel"
         date = "2025-11-02"
-        references = "https://www.trendmicro.com/en_gb/research/25/i/lockbit-5-targets-windows-linux-esxi.html"
-        /*
-                    "https://www.cyfirma.com/news/weekly-intelligence-report-3-october-2025/,
-                    "https://www.aha.org/system/files/media/file/2025/10/h-isac-tlp-white-threat-bulletin-new-lockbit-ransomware-emerges-as-most-dangerous-yet-10-1-2025.pdf",
-                    "https://www.watchguard.com/wgrd-security-hub/ransomware-tracker/lockbit-50",
-                    "https://blog.polyswarm.io/lockbit-5.0"
-        */
-    strings:
-        $note_name = "ReadMeForDecrypt.txt" ascii wide    // Ransom note filename
-        $defrag    = "defrag.exe" ascii wide
+        last_update = "2025-11-19"
+        references = "https://blog.polyswarm.io/lockbit-5.0"
+        category = "Ransomware"
+
     condition:
-        uint16(0) == 0x5A4D and any of them
+        hash.sha256(0, filesize) == "98d8c7870c8e99ca6c8c25bb9ef79f71c25912fbb65698a9a6f22709b8ad34b6" or
+        hash.sha256(0, filesize) == "90b06f07eb75045ea3d4ba6577afc9b58078eafeb2cdd417e2a88d7ccf0c0273" or
+        hash.sha256(0, filesize) == "4dc06ecee904b9165fa699b026045c1b6408cc7061df3d2a7bc2b7b4f0879f4d" or
+        hash.sha256(0, filesize) == "180e93a091f8ab584a827da92c560c78f468c45f2539f73ab2deb308fb837b38" or
+        hash.sha256(0, filesize) == "7ea5afbc166c4e23498aa9747be81ceaf8dad90b8daa07a6e4644dc7c2277b82"
 }
